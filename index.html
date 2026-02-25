@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>クイズに挑戦！</title>
+    <style>
+        body { text-align: center; font-family: sans-serif; padding-top: 50px; }
+        .success { display: none; color: red; font-size: 2em; }
+    </style>
+</head>
+<body>
+
+    <h2>問題：日本の首都はどこ？</h2>
+    <input type="text" id="answerInput" placeholder="答えを入力...">
+    <button onclick="checkAnswer()">回答する</button>
+
+    <div id="celebration" class="success">
+        <h1>🎉 正解！おめでとう！ 🎉</h1>
+        <p>あなたは真のクイズ王です。</p>
+        <img src="https://example.com/celebration.jpg" alt="お祝い画像" width="300">
+    </div>
+
+    <script>
+        function checkAnswer() {
+            const answer = document.getElementById('answerInput').value;
+            // 答えが「東京」だった場合
+            if (answer === "東京") {
+                document.getElementById('celebration').style.display = 'block';
+                alert("正解です！おめでとうございます！");
+            } else {
+                alert("残念！もう一度考えてみてね。");
+            }
+        }
+    </script>
+
+</body>
+</html>
