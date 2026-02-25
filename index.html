@@ -68,7 +68,8 @@
 
 <div class="container" id="quizBox">
     <h2>問題</h2>
-    <p>世界で一番高い山は？</p>
+    <p>今一番高い山は？</p>
+    <p>富士山ではないから気を付けてくださいねええええ</p>
     <input type="text" id="answerInput" placeholder="答えを入力...">
     <button onclick="checkAnswer()">回答する</button>
 </div>
@@ -86,7 +87,7 @@
             document.getElementById('quizBox').style.display = 'none';
             document.getElementById('successBox').style.display = 'block';
         } else {
-            alert("おっと、違います！");
+            alert("不正解");
         }
     }
 </script>
