@@ -1,31 +1,72 @@
-<div class="attendance-board">
-  <div class="row">
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クイズ打刻システム</title>
+    <style>
+        /* レイアウト基本設定 */
+        body { background-color: #e8f0e8; font-family: sans-serif; margin: 0; padding: 20px; }
+        .row { display: grid; grid-template-columns: 50px 1fr; gap: 10px; margin-bottom: 20px; }
+        .alphabet-label { font-weight: bold; font-size: 20px; color: #666; display: flex; align-items: center; }
+        
+        /* レスポンシブなカードグリッド */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+
+        /* カードのデザイン */
+        .staff-card { background: #fff; border: 1px solid #adb5bd; border-radius: 4px; padding: 10px; min-height: 70px; cursor: pointer; transition: 0.2s; position: relative; }
+        .staff-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .card-header { display: flex; align-items: center; gap: 5px; font-size: 12px; margin-bottom: 8px; }
+        
+        /* アイコン・タグ */
+        .tag { border: 1px solid #000; padding: 1px 4px; border-radius: 2px; font-size: 10px; }
+        .tag-pink { color: #d63384; border-color: #d63384; }
+        .tag-blue { color: #0d6efd; border-color: #0d6efd; }
+        .staff-name { font-weight: bold; text-align: center; }
+
+        /* クイズモーダル */
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
+        .quiz-container { background: white; padding: 30px; border-radius: 12px; text-align: center; width: 90%; max-width: 400px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        input[type="text"] { width: 80%; padding: 10px; margin: 15px 0; border: 2px solid #ddd; border-radius: 6px; font-size: 16px; }
+        button { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        #submit-btn { background: #28a745; color: white; margin-right: 5px; }
+        #close-btn { background: #6c757d; color: white; }
+
+        /* 祝福画面 */
+        #celebration-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 12px; z-index: 2; }
+        .hidden { display: none !important; }
+        .error-msg { color: #dc3545; font-size: 14px; margin-top: 5px; height: 20px; }
+
+        /* スマホ対応 */
+        @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="row">
     <div class="alphabet-label">あ</div>
     <div class="card-grid">
-      <div class="staff-card">
-        <div class="card-header">
-          <span class="staff-id">48789</span>
-          <span class="tag tag-pink">ア</span>
+        <div class="staff-card" data-q="このサイトの背景色は何色系？" data-a="緑">
+            <div class="card-header"><span class="tag tag-pink">ア</span> <span>ID: 48789</span></div>
+            <div class="staff-name">背景クイズ</div>
         </div>
-        <div class="staff-name">氏名 太郎</div>
-      </div>
-
-      <div class="staff-card is-off">
-        <div class="card-header">
-          <span class="staff-id">47495</span>
-          <span class="tag tag-pink">ア</span>
-          <span class="status-badge">退勤</span>
+        <div class="staff-card" data-q="1+1は？" data-a="2">
+            <div class="card-header"><span class="tag tag-blue">社</span> <span>ID: 22057</span></div>
+            <div class="staff-name">算数クイズ</div>
         </div>
-        <div class="staff-name">氏名 次郎</div>
-      </div>
-      
-      <div class="staff-card">
-        <div class="card-header">
-          <span class="staff-id">22057</span>
-          <span class="tag tag-blue">社</span>
-        </div>
-        <div class="staff-name">氏名 三郎</div>
-      </div>
     </div>
-  </div>
 </div>
+
+<div id="quiz-overlay" class="overlay">
+    <div class="quiz-container">
+        <h3 id="question-text">問題文</h3>
+        <input type="text" id="answer-input" placeholder="答えを入力...">
+        <div id="feedback" class="error-msg"></div>
+        <div style="margin-top: 20px;">
+            <button id="submit-btn">回答する</button>
+            <button id="close-btn" onclick="closeModal()">閉じる</button>
+        </div>
+        <div id="celebration-screen" class="hidden">
+            <h2 style="color: #ff9800;">✨ 正解です！ ✨</h2>
+            <p>お見事！素晴らしい回答でした。</p>
+            <button onclick="closeModal()" style="background: #007bff; color:white;">戻る</
