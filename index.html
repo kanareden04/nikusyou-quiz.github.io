@@ -1,96 +1,31 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>クイズ</title>
-    <style>
-        /* 基本スタイル（モバイルファースト） */
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
+<div class="attendance-board">
+  <div class="row">
+    <div class="alphabet-label">あ</div>
+    <div class="card-grid">
+      <div class="staff-card">
+        <div class="card-header">
+          <span class="staff-id">48789</span>
+          <span class="tag tag-pink">ア</span>
+        </div>
+        <div class="staff-name">氏名 太郎</div>
+      </div>
 
-        .container {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 500px; /* PCでも広がりすぎない */
-            text-align: center;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            margin: 20px 0;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box; /* 枠線を含めたサイズ計算 */
-            font-size: 16px; /* iPhoneでズームされるのを防ぐ */
-        }
-
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1.1rem;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        .success-page {
-            display: none;
-            animation: popIn 0.5s ease;
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-    </style>
-</head>
-<body>
-
-<div class="container" id="quizBox">
-    <h2>問題</h2>
-    <p>今一番高い山は？</p>
-    <p>富士山ではないから気を付けてくださいねええええ</p>
-    <input type="text" id="answerInput" placeholder="答えを入力...">
-    <button onclick="checkAnswer()">回答する</button>
+      <div class="staff-card is-off">
+        <div class="card-header">
+          <span class="staff-id">47495</span>
+          <span class="tag tag-pink">ア</span>
+          <span class="status-badge">退勤</span>
+        </div>
+        <div class="staff-name">氏名 次郎</div>
+      </div>
+      
+      <div class="staff-card">
+        <div class="card-header">
+          <span class="staff-id">22057</span>
+          <span class="tag tag-blue">社</span>
+        </div>
+        <div class="staff-name">氏名 三郎</div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<div class="container success-page" id="successBox">
-    <h1>🎉 正解 🎉</h1>
-    <p>厚切りみすじに向かえ</p>
-    <!-- <button onclick="location.reload()">もう一度</button> -->
-</div>
-
-<script>
-    function checkAnswer() {
-        const val = document.getElementById('answerInput').value;
-        if (val === "エベレスト" || val === "チョモランマ") {
-            document.getElementById('quizBox').style.display = 'none';
-            document.getElementById('successBox').style.display = 'block';
-        } else {
-            alert("不正解");
-        }
-    }
-</script>
-
-</body>
-</html>
