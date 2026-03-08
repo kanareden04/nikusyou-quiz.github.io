@@ -64,6 +64,23 @@
     </style>
 </head>
 <body>
+<div id="welcome-overlay" class="overlay" style="display: flex; background: rgba(0, 0, 0, 0.7);">
+    <div class="quiz-container" style="border: 3px solid #2563eb; border-radius: 8px;">
+        <h2 style="background-color: #2563eb; color: white; margin: -30px -30px 20px -30px; padding: 15px; border-radius: 4px 4px 0 0; font-size: 1.2rem;">
+            SYSTEM MISSION
+        </h2>
+        <p style="font-size: 1.3rem; font-weight: bold; color: #1e3a8a; margin: 30px 0;">
+            全員退勤させろ
+        </p>
+        <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 25px;">
+            ※すべての従業員の打刻認証を完了させてください。
+        </p>
+    <button onclick="closeWelcome()" style="background: #2563eb; color: white; width: 100%; padding: 12px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">
+            了解した
+        </button>
+    </div>
+</div>
+    
     <header class="page-header">
         打刻認証　-　従業員一覧選択　2026年3月24日（火）
     </header>
@@ -174,6 +191,10 @@
     });
 
     function closeModal() { document.getElementById('quiz-overlay').style.display = 'none'; }
+    // 指令画面を閉じる関数
+    function closeWelcome() {
+    document.getElementById('welcome-overlay').style.display = 'none';
+    }
 </script>
 </body>
 </html>
