@@ -3,12 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>クイズ打刻システム - Mission</title>
+    <title>打刻画面 - Mission</title>
     <style>
         body { background-color: #ffffff; font-family: sans-serif; margin: 0; padding: 20px; color: #374151; }
         .row { display: grid; grid-template-columns: 50px 1fr; gap: 10px; margin-bottom: 30px; }
         .alphabet-label { font-weight: bold; font-size: 1.2rem; color: #9ca3af; padding-top: 10px; }
         .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+
+            /* ページ上部の青いヘッダー */
+        .page-header {
+        background-color: #2563eb; /* プロフェッショナルな青 */
+        color: #ffffff;
+        padding: 15px 20px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* ほんのり影をつけて立体感 */
+        margin-bottom: 20px; /* 下のコンテンツとの間隔 */
+        }
 
         /* カードデザイン（ツートン・太枠・角丸） */
         .staff-card { 
@@ -31,6 +42,7 @@
         .card-header { position: absolute; top: 5px; left: 8px; font-size: 10px; display: flex; gap: 4px; }
         .tag { border: 1px solid #333; padding: 0 3px; border-radius: 2px; font-weight: bold; }
         .tag-pink { color: #d63384; border-color: #d63384; }
+        .tag-blue { color: #0d6efd; border-color: #0d6efd; }
         .staff-name { font-weight: bold; text-align: center; font-size: 14px; margin-top: 15px; }
 
         /* モーダル */
@@ -52,24 +64,22 @@
     </style>
 </head>
 <body>
+    <header class="page-header">
+        打刻認証　-　従業員一覧選択　2026年3月24日（火）
+    </header>
 
 <div class="row">
     <div class="alphabet-label">あ</div>
     <div class="card-grid">
-        <div class="staff-card" data-q="日本の首都は？" data-a="東京">
+        <div class="staff-card" data-q="誕生日は？（数字４ケタ）" data-a="1004">
             <div class="card-header"><span class="tag tag-pink">ア</span> <span>10001</span></div>
             <div class="status-tag status-working">勤務中</div>
-            <div class="staff-name">氏名 太郎</div>
+            <div class="staff-name">上原 蓮太朗</div>
         </div>
-        <div class="staff-card" data-q="信号の進めは何色？" data-a="青">
+        <div class="staff-card" data-q="知立店の卓の総数は？" data-a="27">
             <div class="card-header"><span class="tag tag-pink">ア</span> <span>10002</span></div>
             <div class="status-tag status-working">勤務中</div>
-            <div class="staff-name">氏名 次郎</div>
-        </div>
-        <div class="staff-card" data-q="リンゴを英語で？" data-a="apple">
-            <div class="card-header"><span class="tag tag-pink">ア</span> <span>10003</span></div>
-            <div class="status-tag status-working">勤務中</div>
-            <div class="staff-name">氏名 三郎</div>
+            <div class="staff-name">遠藤 桂大</div>
         </div>
     </div>
 </div>
@@ -77,22 +87,31 @@
 <div class="row">
     <div class="alphabet-label">か</div>
     <div class="card-grid">
+        <div class="staff-card" data-q="リンゴを英語で？" data-a="apple">
+            <div class="card-header"><span class="tag tag-pink">ア</span> <span>10003</span></div>
+            <div class="status-tag status-working">勤務中</div>
+            <div class="staff-name">加藤 美穂</div>
+        </div>
         <div class="staff-card" data-q="パンダの目の周りは何色？" data-a="黒">
             <div class="card-header"><span class="tag tag-pink">ア</span> <span>20001</span></div>
             <div class="status-tag status-working">勤務中</div>
-            <div class="staff-name">氏名 四郎</div>
-        </div>
-        <div class="staff-card" data-q="富士山の高さは何メートル？(数字のみ)" data-a="3776">
-            <div class="card-header"><span class="tag tag-pink">ア</span> <span>20002</span></div>
-            <div class="status-tag status-working">勤務中</div>
-            <div class="staff-name">氏名 五郎</div>
+            <div class="staff-name">黒崎 敦士</div>
         </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="alphabet-label">さ</div>
+    <div class="card-grid">
+        <div class="staff-card" data-q="富士山の高さは何メートル？(数字のみ)" data-a="3776">
+            <div class="card-header"><span class="tag tag-blue">社</span> <span>20002</span></div>
+            <div class="status-tag status-working">勤務中</div>
+            <div class="staff-name">BANIYA SURESH</div>
+        </div>
+
 <div id="final-mission">
-    <p>全ミッション完了</p>
-    <h1>次は2階に行け</h1>
+    <p>全問正解</p>
+    <h1>厚切りみすじに向かえ</h1>
     <button onclick="location.reload()" style="margin-top:20px; color:white; background:none; border:1px solid white;">やり直す</button>
 </div>
 
