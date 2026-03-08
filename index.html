@@ -3,68 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>クイズ打刻システム</title>
+    <title>クイズ打刻システム - Mission</title>
     <style>
-        /* 1. 全体の背景を白色に */
-        body { 
-            background-color: #ffffff; 
-            font-family: sans-serif;
-            margin: 0; padding: 20px; color: #374151;
-        }
-
+        body { background-color: #ffffff; font-family: sans-serif; margin: 0; padding: 20px; color: #374151; }
         .row { display: grid; grid-template-columns: 50px 1fr; gap: 10px; margin-bottom: 30px; }
         .alphabet-label { font-weight: bold; font-size: 1.2rem; color: #9ca3af; padding-top: 10px; }
         .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
 
-        /* 2. カードのデザイン：ツートンカラー、太めの枠、少しの角丸 */
+        /* カードデザイン（ツートン・太枠・角丸） */
         .staff-card { 
             position: relative;
-            background: linear-gradient(to bottom, #f9fafb 50%, #f3f4f6 50%); /* 上下で色分け */
-            border: 1.5px solid #d1d5db; /* 枠線を少し太く */
-            border-radius: 6px; /* ほんの少し丸く */
+            background: linear-gradient(to bottom, #f9fafb 50%, #f3f4f6 50%);
+            border: 1.5px solid #d1d5db;
+            border-radius: 6px;
             min-height: 70px; 
             cursor: pointer;
-            overflow: hidden; /* 角丸からはみ出さないように */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            overflow: hidden;
+            display: flex; flex-direction: column; justify-content: center;
         }
-
         .staff-card:hover { border-color: #9ca3af; }
 
-        /* 右上のステータス表示 */
-        .status-tag {
-            position: absolute;
-            top: 5px; right: 8px;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 1px 4px;
-            border-radius: 2px;
-        }
-        
-        /* 勤務中（未クリア） */
+        /* ステータスタグ */
+        .status-tag { position: absolute; top: 5px; right: 8px; font-size: 10px; font-weight: bold; padding: 1px 4px; border-radius: 2px; }
         .status-working { color: #dc2626; border: 1px solid #dc2626; }
-        /* 退勤（クリア済み） */
         .status-finished { color: #2563eb; border: 1px solid #2563eb; background: #eff6ff; }
 
         .card-header { position: absolute; top: 5px; left: 8px; font-size: 10px; display: flex; gap: 4px; }
         .tag { border: 1px solid #333; padding: 0 3px; border-radius: 2px; font-weight: bold; }
         .tag-pink { color: #d63384; border-color: #d63384; }
-        
         .staff-name { font-weight: bold; text-align: center; font-size: 14px; margin-top: 15px; }
 
         /* モーダル */
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-        .quiz-container { background: white; padding: 30px; border-radius: 8px; text-align: center; width: 85%; max-width: 350px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .quiz-container { background: white; padding: 30px; border-radius: 8px; text-align: center; width: 85%; max-width: 350px; position: relative; }
         input[type="text"] { width: 90%; padding: 10px; margin: 15px 0; border: 1px solid #d1d5db; border-radius: 4px; }
         #submit-btn { background: #374151; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
-        #close-btn { background: transparent; color: #9ca3af; text-decoration: underline; margin-top: 15px; display: block; width: 100%; border: none; cursor: pointer; }
+        
+        /* 全クリア時の指示画面 */
+        #final-mission { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #000; color: #ff0000; /* 黒背景に赤文字でインパクトを出す */
+            flex-direction: column; justify-content: center; align-items: center; z-index: 2000;
+        }
+        #final-mission h1 { font-size: 3rem; text-shadow: 0 0 10px #ff0000; }
 
-        #celebration-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #fff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2; border-radius: 8px; }
         .hidden { display: none !important; }
         .error-msg { color: #dc2626; font-size: 12px; height: 18px; }
-
-        @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -72,18 +56,44 @@
 <div class="row">
     <div class="alphabet-label">あ</div>
     <div class="card-grid">
-        <div class="staff-card" id="card-1" data-q="日本の現在の元号は？" data-a="令和">
-            <div class="card-header"><span class="tag tag-pink">ア</span> <span>48789</span></div>
+        <div class="staff-card" data-q="日本の首都は？" data-a="東京">
+            <div class="card-header"><span class="tag tag-pink">ア</span> <span>10001</span></div>
             <div class="status-tag status-working">勤務中</div>
             <div class="staff-name">氏名 太郎</div>
         </div>
-        
-        <div class="staff-card" id="card-2" data-q="一週間は何日？" data-a="7">
-            <div class="card-header"><span class="tag tag-pink">ア</span> <span>22057</span></div>
+        <div class="staff-card" data-q="信号の進めは何色？" data-a="青">
+            <div class="card-header"><span class="tag tag-pink">ア</span> <span>10002</span></div>
             <div class="status-tag status-working">勤務中</div>
             <div class="staff-name">氏名 次郎</div>
         </div>
+        <div class="staff-card" data-q="リンゴを英語で？" data-a="apple">
+            <div class="card-header"><span class="tag tag-pink">ア</span> <span>10003</span></div>
+            <div class="status-tag status-working">勤務中</div>
+            <div class="staff-name">氏名 三郎</div>
+        </div>
     </div>
+</div>
+
+<div class="row">
+    <div class="alphabet-label">か</div>
+    <div class="card-grid">
+        <div class="staff-card" data-q="パンダの目の周りは何色？" data-a="黒">
+            <div class="card-header"><span class="tag tag-pink">ア</span> <span>20001</span></div>
+            <div class="status-tag status-working">勤務中</div>
+            <div class="staff-name">氏名 四郎</div>
+        </div>
+        <div class="staff-card" data-q="富士山の高さは何メートル？(数字のみ)" data-a="3776">
+            <div class="card-header"><span class="tag tag-pink">ア</span> <span>20002</span></div>
+            <div class="status-tag status-working">勤務中</div>
+            <div class="staff-name">氏名 五郎</div>
+        </div>
+    </div>
+</div>
+
+<div id="final-mission">
+    <p>全ミッション完了</p>
+    <h1>次は2階に行け</h1>
+    <button onclick="location.reload()" style="margin-top:20px; color:white; background:none; border:1px solid white;">やり直す</button>
 </div>
 
 <div id="quiz-overlay" class="overlay">
@@ -92,20 +102,14 @@
         <input type="text" id="answer-input" placeholder="回答を入力...">
         <div id="feedback" class="error-msg"></div>
         <button id="submit-btn">回答する</button>
-        <button id="close-btn" onclick="closeModal()">キャンセル</button>
-        
-        <div id="celebration-screen" class="hidden">
-            <h2 style="color: #2563eb;">✨ 正解！ ✨</h2>
-            <p>お疲れ様でした。退勤を記録します。</p>
-            <button id="finish-btn" style="background: #2563eb; color:white;">画面を閉じる</button>
-        </div>
+        <button onclick="closeModal()" id="close-btn" style="display:block; width:100%; margin-top:10px; background:none; color:#9ca3af; border:none; text-decoration:underline; cursor:pointer;">キャンセル</button>
     </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         let currentAnswer = "";
-        let activeCard = null; // 今クリックされているカードを保持
+        let activeCard = null;
         
         const overlay = document.getElementById('quiz-overlay');
         const input = document.getElementById('answer-input');
@@ -113,32 +117,41 @@
 
         document.addEventListener('click', (e) => {
             const card = e.target.closest('.staff-card');
-            if (card) {
-                activeCard = card; // どのカードか記憶
+            // すでに退勤済みのカードはクリックできないようにする
+            if (card && !card.querySelector('.status-finished')) {
+                activeCard = card;
                 currentAnswer = card.getAttribute('data-a');
                 document.getElementById('question-text').innerText = card.getAttribute('data-q');
                 input.value = "";
                 feedback.innerText = "";
-                document.getElementById('celebration-screen').classList.add('hidden');
                 overlay.style.display = 'flex';
             }
         });
 
         document.getElementById('submit-btn').onclick = () => {
             if (input.value === currentAnswer) {
-                document.getElementById('celebration-screen').classList.remove('hidden');
-                
-                // 正解したカードの文字を「退勤」に変えて、色も青くする
                 const statusTag = activeCard.querySelector('.status-tag');
                 statusTag.innerText = "退勤";
-                statusTag.classList.remove('status-working');
-                statusTag.classList.add('status-finished');
+                statusTag.classList.replace('status-working', 'status-finished');
+                
+                overlay.style.display = 'none';
+                checkAllClear(); // 全クリアしたかチェック
             } else {
                 feedback.innerText = "× 不正解です。";
             }
         };
 
-        document.getElementById('finish-btn').onclick = closeModal;
+        function checkAllClear() {
+            const allCards = document.querySelectorAll('.staff-card');
+            const clearedCards = document.querySelectorAll('.status-finished');
+            
+            // 全カード数とクリア済みカード数が一致したら
+            if (allCards.length === clearedCards.length) {
+                setTimeout(() => {
+                    document.getElementById('final-mission').style.display = 'flex';
+                }, 500); // 0.5秒後に表示
+            }
+        }
     });
 
     function closeModal() { document.getElementById('quiz-overlay').style.display = 'none'; }
